@@ -1,0 +1,20 @@
+<div class="canvas">
+    <app-device *ngFor="let device of devices" [device]="device"></app-device>
+   
+</div>
+<button mat-raised-button (click)="addDevice()" color="primary">Add Screen</button>
+<button mat-raised-button color="primary">Add Wallpaper</button>
+
+<form class="device-form">
+    <mat-form-field class="device-input-full-width">
+      <input [(ngModel)]="widthInput" name="deviceForm" matInput placeholder="Screen Width">
+    </mat-form-field>
+  
+    <mat-form-field  class="device-input-full-width">
+      <input [(ngModel)]="heightInput" name="deviceForm" matInput placeholder="Screen Height">
+    </mat-form-field>
+
+    <mat-form-field  class="device-input-full-width">
+        <input [(ngModel)]="sizeInput" name="deviceForm" matInput placeholder="Screen Size">
+    </mat-form-field>
+  </form>
