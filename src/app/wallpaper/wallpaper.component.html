@@ -1,0 +1,12 @@
+<div class="wallpaper-box" 
+    cdkDragBoundary=".canvas" 
+    cdkDrag
+    [id]="wallpaper.id + '_box'"
+    [style.width.px]="wallpaper.emulatedDimension.widthPx" 
+    [style.height.px]="wallpaper.emulatedDimension.heightPx">   
+
+    <img [id]="wallpaper.id" 
+         [src]="wallpaper.url"
+         [style.width.px]="wallpaper.emulatedDimension.widthPx" 
+         [style.height.px]="wallpaper.emulatedDimension.heightPx" >
+</div>

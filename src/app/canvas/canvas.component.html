@@ -1,9 +1,12 @@
 <div class="canvas">
     <app-device *ngFor="let device of devices" [device]="device"></app-device>
-   
+    <app-wallpaper *ngFor="let wallpaper of wallpapers" [wallpaper]="wallpaper"></app-wallpaper>
 </div>
+
 <button mat-raised-button (click)="addDevice()" color="primary">Add Screen</button>
-<button mat-raised-button color="primary">Add Wallpaper</button>
+<button mat-raised-button (click)="wallpaperFileInput.click()" color="primary">Add Wallpaper
+    <input #wallpaperFileInput  style="display:none;"  type='file' (change)="addWallpaper($event)">
+</button>
 
 <form class="device-form">
     <mat-form-field class="device-input-full-width">
@@ -17,4 +20,14 @@
     <mat-form-field  class="device-input-full-width">
         <input [(ngModel)]="sizeInput" name="deviceForm" matInput placeholder="Screen Size">
     </mat-form-field>
-  </form>
+</form>
+
+<div id="deviceList" >
+  <h5>Devices:</h5>
+  <ul>
+    <li *ngFor="let device of devices; let i = index">
+      {{ device.nativeDimension.widthPx }}x{{ device.nativeDimension.heightPx }}, {{ device.sizeInch }}&quot;
+      <span (click)="deleteDevice(i)" class='delBtn' href='#'>delete</span>
+    </li>
+  </ul>
+</div>

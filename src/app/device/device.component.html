@@ -1,7 +1,8 @@
 
 <div class="device-box" 
         cdkDragBoundary=".canvas" 
-        cdkDrag 
-        [style.width.px]="device.emulationWidthPx" 
-        [style.height.px]="device.emulationHeightPx"
+        cdkDrag
+        [id]="device.id"
+        [style.width.px]="device.emulatedDimension.widthPx" 
+        [style.height.px]="device.emulatedDimension.heightPx"
 ></div>

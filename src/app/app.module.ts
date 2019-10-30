@@ -7,17 +7,17 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CanvasComponent } from './canvas/canvas.component';
-import { ScreenComponent } from './screen/screen.component';
 import { DeviceComponent } from './device/device.component';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { WallpaperComponent } from './wallpaper/wallpaper.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CanvasComponent,
-    ScreenComponent,
-    DeviceComponent
+    DeviceComponent,
+    WallpaperComponent
   ],
   imports: [
     BrowserModule,

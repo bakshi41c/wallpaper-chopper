@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ScreenComponent } from './screen.component';
+import { WallpaperComponent } from './wallpaper.component';
 
-describe('ScreenComponent', () => {
-  let component: ScreenComponent;
-  let fixture: ComponentFixture<ScreenComponent>;
+describe('WallpaperComponent', () => {
+  let component: WallpaperComponent;
+  let fixture: ComponentFixture<WallpaperComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ScreenComponent ]
+      declarations: [ WallpaperComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ScreenComponent);
+    fixture = TestBed.createComponent(WallpaperComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
