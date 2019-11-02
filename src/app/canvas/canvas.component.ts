@@ -155,50 +155,53 @@ export class CanvasComponent implements OnInit {
 
   crop(){
 
-    let wallpaper = this.wallpapers[0]
-    let device = this.devices[0]
-    let relativePoint = this.computeRelativePosition(wallpaper.position, device.position)
-    // Log.ds(this, this.wallpapers[0].position)
-    // Log.ds(this, this.devices[0].position)
-    // Log.ds(this, relativePoint)
-
-    var canvas = document.getElementById('croppedImageCanvas') as HTMLCanvasElement;
-    var context = canvas.getContext('2d') ;
-    var imageObj = document.getElementById(this.wallpapers[0].id) as HTMLImageElement ;
-
-    let wScale = wallpaper.nativeDimension.heightPx / wallpaper.emulatedDimension.heightPx
-    let hScale = wallpaper.nativeDimension.widthPx / wallpaper.emulatedDimension.widthPx
-
-    // draw cropped image
-    var sourceX = relativePoint.x * wScale;
-    var sourceY = relativePoint.y * hScale;
-    var sourceWidth = device.nativeDimension.widthPx;
-    var sourceHeight = device.nativeDimension.heightPx;
-
-    let obj = {
-      "relativePoint" : relativePoint,
-      "wScale" : wScale,
-      "hScale" : hScale,
-      "sourceX" : sourceX,
-      "sourceY" : sourceY,
-      "sourceWidth" : sourceWidth,
-      "sourceHeight" : sourceHeight
-    }
-    Log.dr(this, obj)
-
-    canvas.width = sourceWidth;
-    canvas.height = sourceHeight;
-    context.drawImage(imageObj, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, sourceWidth, sourceHeight);
-
-    // var link = document.createElement("a");
-    // link.download = "image.png";
-
-    this.devices[0].backgoundImage = canvas.toDataURL('image/png', 1.0);
-    // canvas.toBlob(function(blob){
-    //   link.href = URL.createObjectURL(blob);
-    //   console.log(blob);
-    //   console.log(link.href);
-    //   link.click()
-    // },'image/png', 1);
+    this.devices.forEach(device => {
+      let wallpaper = this.wallpapers[0]
+      let relativePoint = this.computeRelativePosition(wallpaper.position, device.position)
+      // Log.ds(this, this.wallpapers[0].position)
+      // Log.ds(this, this.devices[0].position)
+      // Log.ds(this, relativePoint)
+  
+      var canvas = document.getElementById('croppedImageCanvas') as HTMLCanvasElement;
+      var context = canvas.getContext('2d') ;
+      var imageObj = document.getElementById(this.wallpapers[0].id) as HTMLImageElement ;
+  
+      let wScale = wallpaper.nativeDimension.heightPx / wallpaper.emulatedDimension.heightPx
+      let hScale = wallpaper.nativeDimension.widthPx / wallpaper.emulatedDimension.widthPx
+  
+      // draw cropped image
+      var sourceX = relativePoint.x * wScale;
+      var sourceY = relativePoint.y * hScale;
+      var sourceWidth = device.nativeDimension.widthPx;
+      var sourceHeight = device.nativeDimension.heightPx;
+  
+      let obj = {
+        "relativePoint" : relativePoint,
+        "wScale" : wScale,
+        "hScale" : hScale,
+        "sourceX" : sourceX,
+        "sourceY" : sourceY,
+        "sourceWidth" : sourceWidth,
+        "sourceHeight" : sourceHeight
+      }
+      Log.dr(this, obj)
+  
+      canvas.width = sourceWidth;
+      canvas.height = sourceHeight;
+      context.drawImage(imageObj, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, sourceWidth, sourceHeight);
+  
+      var link = document.createElement("a");
+      link.download = "image.png";
+  
+      device.backgoundImage = canvas.toDataURL('image/png', 1.0);
+      canvas.toBlob(function(blob){
+        link.href = URL.createObjectURL(blob);
+        console.log(blob);
+        console.log(link.href);
+        link.click()
+      },'image/png', 1);
+    
+    });
   }
+   
 }
