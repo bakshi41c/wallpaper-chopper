@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { Wallpaper } from 'src/model';
 import { Log } from '../logger';
+import { Point, DragRef } from '@angular/cdk/drag-drop/typings/drag-ref';
+import { CdkDragEnd } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-wallpaper',
@@ -20,6 +22,15 @@ export class WallpaperComponent implements OnInit, AfterViewInit {
         this.wallpaper.setNativeDimension(height, width)
     }
   }
+
   ngOnInit() {
+  }
+
+  public onDragEnded(event: CdkDragEnd): void {
+    let parentPos = document.getElementById('wallpaperCanvas').getBoundingClientRect();
+    let childPos = document.getElementById(this.wallpaper.id + "_box").getBoundingClientRect();
+    this.wallpaper.position.y = childPos.top - parentPos.top;
+    this.wallpaper.position.x = childPos.left - parentPos.left;
+    Log.ds(this, this.wallpaper.position);
   }
 }

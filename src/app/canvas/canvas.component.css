@@ -2,6 +2,13 @@
     width: 1200px;
     height: 600px;
     max-width: 100%;
+    margin: auto;
+}
+
+.canvas-wrapper {
+    width: 1200px;
+    height: 600px;
+    max-width: 100%;
     border: dotted #ccc 2px;
     margin: auto;
     margin-top: 10px;

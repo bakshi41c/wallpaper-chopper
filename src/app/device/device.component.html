@@ -5,4 +5,8 @@
         [id]="device.id"
         [style.width.px]="device.emulatedDimension.widthPx" 
         [style.height.px]="device.emulatedDimension.heightPx"
-></div>
+        (cdkDragEnded)="onDragEnded($event)"
+        [cdkDragFreeDragPosition] = "{ x: 0, y: 0}">
+        <img [id]="device.id + '_background'" 
+         [src]="device.backgoundImage">
+</div>

@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Device } from 'src/model';
+import { Point, DragRef } from '@angular/cdk/drag-drop/typings/drag-ref';
+import { Log } from '../logger';
+import { CdkDragEnd } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-device',
@@ -14,4 +17,11 @@ export class DeviceComponent implements OnInit {
   ngOnInit() {
   }
 
+  public onDragEnded(event: CdkDragEnd): void {
+    let parentPos = document.getElementById('wallpaperCanvas').getBoundingClientRect();
+    let childPos = document.getElementById(this.device.id).getBoundingClientRect();
+    this.device.position.y = childPos.top - parentPos.top;
+    this.device.position.x = childPos.left - parentPos.left;
+    Log.ds(this, this.device.position);
+  }
 }

@@ -1,12 +1,15 @@
-<div class="canvas">
+<div class="canvas-wrapper">
+  <div id="wallpaperCanvas" class="canvas">
     <app-device *ngFor="let device of devices" [device]="device"></app-device>
     <app-wallpaper *ngFor="let wallpaper of wallpapers" [wallpaper]="wallpaper"></app-wallpaper>
-</div>
+  </div>
+</div>  
 
 <button mat-raised-button (click)="addDevice()" color="primary">Add Screen</button>
 <button mat-raised-button (click)="wallpaperFileInput.click()" color="primary">Add Wallpaper
     <input #wallpaperFileInput  style="display:none;"  type='file' (change)="addWallpaper($event)">
 </button>
+<button mat-raised-button (click)="crop()" color="primary">Crop</button>
 
 <form class="device-form">
     <mat-form-field class="device-input-full-width">
@@ -31,3 +34,5 @@
     </li>
   </ul>
 </div>
+
+<canvas hidden id="croppedImageCanvas"></canvas>
