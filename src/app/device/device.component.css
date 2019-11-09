@@ -1,16 +1,23 @@
 .device-box {
-    background: rgba(233, 9, 9, 0.438);    
+    /* background: rgb(226,226,226); */
+    /* background: -moz-linear-gradient(top, rgba(226,226,226,1) 0%, rgba(219,219,219,1) 50%, rgba(209,209,209,1) 51%, rgba(254,254,254,1) 100%); */
+    /* background: -webkit-linear-gradient(top, rgba(226,226,226,1) 0%,rgba(219,219,219,1) 50%,rgba(209,209,209,1) 51%,rgba(254,254,254,1) 100%); */
+    background: linear-gradient(137deg, rgba(174,188,191,0.4) 0%,rgba(110,119,116,0.4) 50%,rgba(10,14,10,0.3) 51%,rgba(10,8,9,0.2) 100%);
     cursor: move;
     justify-content: center;
     align-items: center;
     text-align: center;
     position: relative;
     z-index: 2;
+    border: 1px solid #FFFFFF;
+    border-radius: 4px; 
 }
 
 img {
     height: inherit;
     width: inherit;
+    border-radius: 4px;
+    z-index: 1;
 }
 
 .device-box:active {

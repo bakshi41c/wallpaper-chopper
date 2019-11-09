@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Wallpaper, Device, Dimension, Point } from 'src/model';
 import { Log } from '../logger';
 import Cropper from 'cropperjs';
-
+import { Observable } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import {map, startWith} from 'rxjs/operators';
 
 @Component({
   selector: 'app-canvas',
@@ -13,9 +15,6 @@ export class CanvasComponent implements OnInit {
 
   constructor() { }
 
-  widthInput : number
-  heightInput : number
-  sizeInput : number
 
   devices : Device[] = []
   wallpapers : Wallpaper[] = []
@@ -27,14 +26,71 @@ export class CanvasComponent implements OnInit {
 
   deviceRefArea = 60000
 
+  deviceFormControl = new FormControl();
+  options: string[] = [
+    '4096x2160 27" (4K 27inch)',
+    '4096x2160 23" (4K 23inch)',
+
+    '1920x1080 27" (FHD 27inch)',
+    '1920x1080 23" (FHD 23inch)',
+
+    '6016x3384 32" (Pro Retina XDR)',
+    '5120x2880 27" (iMac 5K 27)',
+    '4096x2304 21.5" (iMac 4K 21.5)',
+    '2880x1800 15.4" (Macbook Pro 15 3rd Gen)',
+    '2560x1600 13.3" (Macbook Pro 13 3rd Gen)',
+    '2732x2048 12.9" (iPad Pro 1/2/3 Gen)',
+    '2388x1668 11" (iPad Pro 11 inch)',
+    '2304x1440 12" (Macbook 12inch)',
+    '2224x1668 10.5" (iPad Air 3rd Gen)',
+    '2160x1620 10.2" (iPad 7th Gen)',
+]
+  filteredOptions: Observable<string[]>;
+
+  deviceDescPattern = /([0-9]+)x([0-9]+) ([0-9]+.?[0-9]?)"( [(](.*)[)])?/g; 
+
+  deviceInputInvalid = false
+
   ngOnInit() {
+    this.filteredOptions = this.deviceFormControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
   }
 
-  addDevice() {
-    let id = "device_"+ (++this.deviceCounter)
-    let newDevice = new Device(id, Number(this.sizeInput), Number(this.heightInput), Number(this.widthInput))
-    this.devices.push(newDevice)
-    this.draw()
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    Log.d(this, filterValue)
+    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+  OnDeiveSelected(option) {
+    this.addDevice(option)
+    this.deviceFormControl.setValue("")
+  }
+
+  OnAddDeviceBtnClicked(){
+    this.addDevice(this.deviceFormControl.value)
+    this.deviceFormControl.setValue("")
+  }
+
+  addDevice(deviceDescStr : string) {
+    this.deviceInputInvalid = false
+    let deviceDesc = this.deviceDescPattern.exec(deviceDescStr)
+    if (deviceDesc && deviceDesc.length >= 6) {
+      let id = "device_"+ (++this.deviceCounter)
+      let width = Number(deviceDesc[1])
+      let height = Number(deviceDesc[2])
+      let screenSize = Number(deviceDesc[3])
+      let name = deviceDesc[5] ? String(deviceDesc[5]) : ""
+      let newDevice = new Device(id, name, screenSize, height, width)
+      this.devices.push(newDevice)
+      this.draw()
+    } else {
+      this.deviceInputInvalid = true
+      Log.d(this, "invalid device: " + deviceDescStr)
+    }
+    this.deviceDescPattern.lastIndex = 0;
   }
 
   getLargestScreen() {
@@ -154,7 +210,6 @@ export class CanvasComponent implements OnInit {
   }
 
   crop(){
-
     this.devices.forEach(device => {
       let wallpaper = this.wallpapers[0]
       let relativePoint = this.computeRelativePosition(wallpaper.position, device.position)
@@ -172,26 +227,19 @@ export class CanvasComponent implements OnInit {
       // draw cropped image
       var sourceX = relativePoint.x * wScale;
       var sourceY = relativePoint.y * hScale;
-      var sourceWidth = device.nativeDimension.widthPx;
-      var sourceHeight = device.nativeDimension.heightPx;
-  
-      let obj = {
-        "relativePoint" : relativePoint,
-        "wScale" : wScale,
-        "hScale" : hScale,
-        "sourceX" : sourceX,
-        "sourceY" : sourceY,
-        "sourceWidth" : sourceWidth,
-        "sourceHeight" : sourceHeight
+      var sourceWidth = device.emulatedDimension.widthPx * wScale;
+      var sourceHeight = device.emulatedDimension.heightPx * hScale;
+      
+      if (sourceHeight !== device.nativeDimension.heightPx) {
+        Log.d(this, "wallpaper " + device.id + " resolution not native")
       }
-      Log.dr(this, obj)
-  
-      canvas.width = sourceWidth;
-      canvas.height = sourceHeight;
-      context.drawImage(imageObj, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, sourceWidth, sourceHeight);
+
+      canvas.width = device.nativeDimension.widthPx;
+      canvas.height = device.nativeDimension.heightPx;
+      context.drawImage(imageObj, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, device.nativeDimension.widthPx, device.nativeDimension.heightPx);
   
       var link = document.createElement("a");
-      link.download = "image.png";
+      link.download = "image_" + device.id + ".png";
   
       device.backgoundImage = canvas.toDataURL('image/png', 1.0);
       canvas.toBlob(function(blob){
@@ -203,5 +251,4 @@ export class CanvasComponent implements OnInit {
     
     });
   }
-   
 }

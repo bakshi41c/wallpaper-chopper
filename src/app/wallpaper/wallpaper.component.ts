@@ -30,7 +30,5 @@ export class WallpaperComponent implements OnInit, AfterViewInit {
     let parentPos = document.getElementById('wallpaperCanvas').getBoundingClientRect();
     let childPos = document.getElementById(this.wallpaper.id + "_box").getBoundingClientRect();
     this.wallpaper.position.y = childPos.top - parentPos.top;
-    this.wallpaper.position.x = childPos.left - parentPos.left;
-    Log.ds(this, this.wallpaper.position);
-  }
+    this.wallpaper.position.x = childPos.left - parentPos.left;  }
 }

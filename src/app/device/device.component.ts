@@ -17,11 +17,12 @@ export class DeviceComponent implements OnInit {
   ngOnInit() {
   }
 
+  startPosition = {x: 0, y: 0};
+
   public onDragEnded(event: CdkDragEnd): void {
     let parentPos = document.getElementById('wallpaperCanvas').getBoundingClientRect();
     let childPos = document.getElementById(this.device.id).getBoundingClientRect();
     this.device.position.y = childPos.top - parentPos.top;
     this.device.position.x = childPos.left - parentPos.left;
-    Log.ds(this, this.device.position);
   }
 }

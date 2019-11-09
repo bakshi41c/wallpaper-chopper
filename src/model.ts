@@ -2,19 +2,21 @@ import { Log } from './app/logger'
 
 export class Device {
     id : string
+    name: string
     sizeInch : number  // diagonal
     emulatedDimension : Dimension
     nativeDimension : Dimension
     position: Point
     backgoundImage : string;
 
-    public constructor (id :string, sizeInch : number, heightPx : number, widthPx : number) {
+    public constructor (id :string, name: string, sizeInch : number, heightPx : number, widthPx : number) {
         this.id = id
         this.sizeInch = Number(sizeInch)
         this.nativeDimension = new Dimension(heightPx, widthPx)
         this.emulatedDimension = new Dimension(0,0)
         this.position = new Point(0,0)
-        this.backgoundImage = 'none'
+        this.backgoundImage = ''
+        this.name = name
     }
 
     public setEmulatedDimensions(refScreenSize: number, refEmulatedArea: number) {

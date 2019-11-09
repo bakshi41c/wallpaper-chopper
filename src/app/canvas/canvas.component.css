@@ -16,10 +16,26 @@
 
 .device-form {
     min-width: 150px;
-    max-width: 500px;
+    max-width: 400px;
     width: 100%;
   }
   
 .device-input-full-width {
     width: 100%;
+}
+
+app-device {
+    position: absolute;
+    top: 12px;
+}
+
+app-wallpaper {
+    position: absolute;
+    top: 12px;
+}
+
+#invalidScreenText{
+    margin-top: -20px;
+    font-size: 11px;
+    color: orangered;
 }

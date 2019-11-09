@@ -5,25 +5,24 @@
   </div>
 </div>  
 
-<button mat-raised-button (click)="addDevice()" color="primary">Add Screen</button>
+<button mat-raised-button (click)="OnAddDeviceBtnClicked()" color="primary">Add Screen</button>
 <button mat-raised-button (click)="wallpaperFileInput.click()" color="primary">Add Wallpaper
     <input #wallpaperFileInput  style="display:none;"  type='file' (change)="addWallpaper($event)">
 </button>
 <button mat-raised-button (click)="crop()" color="primary">Crop</button>
 
-<form class="device-form">
-    <mat-form-field class="device-input-full-width">
-      <input [(ngModel)]="widthInput" name="deviceForm" matInput placeholder="Screen Width">
-    </mat-form-field>
-  
-    <mat-form-field  class="device-input-full-width">
-      <input [(ngModel)]="heightInput" name="deviceForm" matInput placeholder="Screen Height">
-    </mat-form-field>
+<div>
+  <mat-form-field class="device-form">
+    <input type="text" placeholder='Select a screen or type e.g. 1920x1080 23"' aria-label="Number" matInput [formControl]="deviceFormControl" [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="OnDeiveSelected($event.option.value)">
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+        {{option}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <p *ngIf="deviceInputInvalid" id="invalidScreenText">Invalid screen format</p>
 
-    <mat-form-field  class="device-input-full-width">
-        <input [(ngModel)]="sizeInput" name="deviceForm" matInput placeholder="Screen Size">
-    </mat-form-field>
-</form>
+</div>
 
 <div id="deviceList" >
   <h5>Devices:</h5>

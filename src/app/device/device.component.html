@@ -6,7 +6,7 @@
         [style.width.px]="device.emulatedDimension.widthPx" 
         [style.height.px]="device.emulatedDimension.heightPx"
         (cdkDragEnded)="onDragEnded($event)"
-        [cdkDragFreeDragPosition] = "{ x: 0, y: 0}">
-        <img [id]="device.id + '_background'" 
+        [cdkDragFreeDragPosition]="startPosition">
+        <img *ngIf="device.backgoundImage" [id]="device.id + '_background'" 
          [src]="device.backgoundImage">
 </div>
