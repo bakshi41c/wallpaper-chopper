@@ -1,37 +1,55 @@
+<div *ngIf="showLoading" class="dark-overlay">
+    <mat-spinner></mat-spinner>
+</div>
+
 <div class="canvas-wrapper">
   <div id="wallpaperCanvas" class="canvas">
     <app-device *ngFor="let device of devices" [device]="device"></app-device>
     <app-wallpaper *ngFor="let wallpaper of wallpapers" [wallpaper]="wallpaper"></app-wallpaper>
   </div>
-</div>  
-
-<button mat-raised-button (click)="OnAddDeviceBtnClicked()" color="primary">Add Screen</button>
-<button mat-raised-button (click)="wallpaperFileInput.click()" color="primary">Add Wallpaper
-    <input #wallpaperFileInput  style="display:none;"  type='file' (change)="addWallpaper($event)">
-</button>
-<button mat-raised-button (click)="crop()" color="primary">Crop</button>
-
-<div>
-  <mat-form-field class="device-form">
-    <input type="text" placeholder='Select a screen or type e.g. 1920x1080 23"' aria-label="Number" matInput [formControl]="deviceFormControl" [matAutocomplete]="auto">
-    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="OnDeiveSelected($event.option.value)">
-      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-        {{option}}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
-  <p *ngIf="deviceInputInvalid" id="invalidScreenText">Invalid screen format</p>
-
 </div>
 
-<div id="deviceList" >
-  <h5>Devices:</h5>
-  <ul>
-    <li *ngFor="let device of devices; let i = index">
-      {{ device.nativeDimension.widthPx }}x{{ device.nativeDimension.heightPx }}, {{ device.sizeInch }}&quot;
-      <span (click)="deleteDevice(i)" class='delBtn' href='#'>delete</span>
-    </li>
-  </ul>
-</div>
+<div id="controlPanel" class="row">
+
+    <div id="wallpapers" class="column">
+      <h3 class="step-header">Step 1: Add the Wallpaper</h3>
+      <button id="addWallpaperBtn" mat-raised-button (click)="wallpaperFileInput.click()" color="primary">{{ wallpapers.length === 0 ? 'Add Wallpaper' : 'Change Wallpaper' }}
+          <input #wallpaperFileInput  style="display:none;"  type='file' (change)="addWallpaper($event)">
+      </button>
+    </div>
+
+    <div id="devices" class="column">
+      <h3 class="step-header">Step 2: Add the screens</h3>
+      <div>
+        <mat-form-field class="device-form">
+          <input type="text" placeholder='Select a screen or type e.g. 1920x1080 23"' aria-label="Number" matInput [formControl]="deviceFormControl" [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="OnDeiveSelected($event.option.value)">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <p *ngIf="deviceInputInvalid" id="invalidScreenText">Invalid screen format</p>
+      </div>
+      <button id="addScreenBtn" mat-raised-button (click)="OnAddDeviceBtnClicked()" color="primary">Add Screen</button>
+      
+      <div id="deviceList" >
+        <p>Screens:</p>
+        <ul>
+          <li *ngFor="let device of devices; let i = index">
+            {{ device.nativeDimension.widthPx }}x{{ device.nativeDimension.heightPx }}, {{ device.sizeInch }} &quot; {{ device.name ? ' ('+ device.name + ')' : '' }}
+            <span (click)="deleteDevice(i)" class='red-link' href='#'>&nbsp;&nbsp;[remove]</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="crop" class="column">
+      <h3 class="step-header">Step 3: Crop!</h3>
+      <button id="cropBtn" mat-raised-button (click)="cropBtnClicked()" color="warn">Crop</button>
+    </div>
+
+  </div>
+
 
 <canvas hidden id="croppedImageCanvas"></canvas>

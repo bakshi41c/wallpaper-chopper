@@ -51,6 +51,8 @@ export class CanvasComponent implements OnInit {
 
   deviceInputInvalid = false
 
+  showLoading = false
+
   ngOnInit() {
     this.filteredOptions = this.deviceFormControl.valueChanges.pipe(
       startWith(''),
@@ -209,6 +211,14 @@ export class CanvasComponent implements OnInit {
     return new Point(target.x - base.x, target.y - base.y)
   }
 
+  cropBtnClicked(){
+    this.showLoading = true
+    setTimeout(() => {
+      this.crop()
+      this.showLoading = false
+    }, 0)
+  }
+
   crop(){
     this.devices.forEach(device => {
       let wallpaper = this.wallpapers[0]
@@ -241,14 +251,13 @@ export class CanvasComponent implements OnInit {
       var link = document.createElement("a");
       link.download = "image_" + device.id + ".png";
   
-      device.backgoundImage = canvas.toDataURL('image/png', 1.0);
+      // device.backgoundImage = canvas.toDataURL('image/png', 1.0);
       canvas.toBlob(function(blob){
         link.href = URL.createObjectURL(blob);
         console.log(blob);
         console.log(link.href);
-        link.click()
+        link.click();
       },'image/png', 1);
-    
     });
   }
 }

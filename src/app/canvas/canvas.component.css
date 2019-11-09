@@ -39,3 +39,55 @@ app-wallpaper {
     font-size: 11px;
     color: orangered;
 }
+
+.dark-overlay {
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    position: absolute;
+}
+
+mat-spinner {
+    position: relative;
+    margin: auto;
+    top: 45%;
+}
+
+.column {
+    float: left;
+    width: 33.3%;
+}
+
+.row {
+    padding: 20px
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.step-header{
+    color: darkgray
+}
+
+#addWallpaperBtn {
+    left: 25%;
+    margin-top: 70px;
+}
+
+#cropBtn {
+    min-width: 150px;
+    left: 25%;
+    margin-top: 70px;
+}
+
+#addScreenBtn {
+    left: 25%
+}
+
+.red-link {
+    cursor: pointer;
+    color: red;
+}
